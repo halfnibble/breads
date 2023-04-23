@@ -17,11 +17,9 @@ const breadsController = require("./controllers/breads_controller.js");
 app.use("/breads", breadsController);
 
 /*
-
 Express:
 localhost:3003/ -> "Welcome to an Awesome App about Breads!"
 localhost:3003/breads {/} -> breadsController ? -> "This is the index at /breads"
-
 */
 
 // LISTEN

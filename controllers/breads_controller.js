@@ -8,10 +8,10 @@ breads.get("/", (req, res) => {
     res.send(Bread);
 });
 
-// READ ONE?
+// READ ONE
 breads.get("/:arrayIndex", (req, res) => {
     const arrayIndex = req.params.arrayIndex;
-    res.send(Bread[arrayIndex]);
+    res.send(Bread[arrayIndex]); // Bread[0], Bread[1], Bread[2], ...
 });
 
 // EXPORT
