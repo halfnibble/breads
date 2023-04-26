@@ -6,6 +6,11 @@ const Index = ({ breads }) => {
     return (
         <Default>
             <h2>Index Page</h2>
+            <div className="newButton">
+                <a className="button" href="/breads/new">
+                    Add a new bread
+                </a>
+            </div>
             <ul>
                 {breads.map((bread, index) => (
                     <li key={index}>
