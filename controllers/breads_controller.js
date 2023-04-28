@@ -21,6 +21,7 @@ breads.get("/:arrayIndex", (req, res) => {
     if (Bread[arrayIndex]) {
         res.render("show", {
             bread: Bread[arrayIndex],
+            index: arrayIndex,
         }); // Bread[0], Bread[1], Bread[2], ...
     } else {
         res.send("404");
@@ -45,6 +46,13 @@ breads.post("/", (req, res) => {
     }
     Bread.push(newBread);
     res.redirect("/breads");
+});
+
+// DELETE
+breads.delete("/:arrayIndex", (req, res) => {
+    const arrayIndex = req.params.arrayIndex;
+    Bread.splice(arrayIndex, 1);
+    res.status(303).redirect("/breads");
 });
 
 // EXPORT
