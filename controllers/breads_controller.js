@@ -5,17 +5,20 @@ const Bread = require("../models/bread.js");
 
 // INDEX - READ ALL
 breads.get("/", (req, res) => {
-    // res.send(Bread);
-    res.render("index", {
-        breads: Bread,
+    Bread.find().then((foundBreads) => {
+        res.render("index", {
+            breads: foundBreads,
+            title: "Index page",
+        });
     });
 });
 
+// NEW Bread Form
 breads.get("/new", (req, res) => {
-    res.render("new");
+    res.render("new", { title: "New bread" });
 });
 
-// EDIT
+// EDIT Bread Form
 breads.get("/:arrayIndex/edit", (req, res) => {
     const arrayIndex = req.params.arrayIndex;
     res.render("edit", {
@@ -25,16 +28,21 @@ breads.get("/:arrayIndex/edit", (req, res) => {
 });
 
 // READ ONE - SHOW
-breads.get("/:arrayIndex", (req, res) => {
-    const arrayIndex = req.params.arrayIndex;
-    if (Bread[arrayIndex]) {
-        res.render("show", {
-            bread: Bread[arrayIndex],
-            index: arrayIndex,
-        }); // Bread[0], Bread[1], Bread[2], ...
-    } else {
-        res.send("404");
-    }
+breads.get("/:id", (req, res) => {
+    const id = req.params.id;
+    Bread.findById(id)
+        .then((foundBread) => {
+            if (foundBread === null) {
+                res.send("404 - Bread not found");
+            } else {
+                res.render("show", {
+                    bread: foundBread,
+                });
+            }
+        })
+        .catch((err) => {
+            res.send("500 - Server Error");
+        });
 });
 
 // CREATE
@@ -42,8 +50,7 @@ breads.post("/", (req, res) => {
     let newBread = { ...req.body };
     // Default bread image
     if (newBread.image === "") {
-        newBread.image =
-            "https://images.unsplash.com/photo-1517686469429-8bdb88b9f907?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80";
+        newBread.image = undefined;
     }
     // Process hasGluten checkbox
     if (newBread.hasGluten === "on") {
@@ -53,7 +60,7 @@ breads.post("/", (req, res) => {
     } else {
         console.error("Error: hasGluten value is:", newBread.hasGluten);
     }
-    Bread.push(newBread);
+    Bread.create(newBread);
     res.redirect("/breads");
 });
 
