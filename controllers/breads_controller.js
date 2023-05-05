@@ -36,6 +36,7 @@ breads.get("/:id", (req, res) => {
             if (foundBread === null) {
                 res.send("404 - Bread not found");
             } else {
+                console.log(foundBread.getBakedBy());
                 res.render("show", {
                     bread: foundBread,
                 });
