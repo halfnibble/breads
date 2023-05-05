@@ -19,11 +19,12 @@ breads.get("/new", (req, res) => {
 });
 
 // EDIT Bread Form
-breads.get("/:arrayIndex/edit", (req, res) => {
-    const arrayIndex = req.params.arrayIndex;
-    res.render("edit", {
-        bread: Bread[arrayIndex],
-        index: arrayIndex,
+breads.get("/:id/edit", (req, res) => {
+    const id = req.params.id;
+    Bread.findById(id).then((foundBread) => {
+        res.render("edit", {
+            bread: foundBread,
+        });
     });
 });
 
@@ -65,31 +66,32 @@ breads.post("/", (req, res) => {
 });
 
 // UPDATE
-breads.put("/:arrayIndex", (req, res) => {
-    const arrayIndex = req.params.arrayIndex;
-    let updatedBread = { ...req.body };
+breads.put("/:id", (req, res) => {
+    const id = req.params.id;
+    let updateBread = { ...req.body };
     // Default bread image
-    if (updatedBread.image === "") {
-        updatedBread.image =
+    if (updateBread.image === "") {
+        updateBread.image =
             "https://images.unsplash.com/photo-1517686469429-8bdb88b9f907?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80";
     }
     // Process hasGluten checkbox
-    if (updatedBread.hasGluten === "on") {
-        updatedBread.hasGluten = true;
-    } else if (updatedBread.hasGluten === "off") {
-        updatedBread.hasGluten = false;
+    if (updateBread.hasGluten === "on") {
+        updateBread.hasGluten = true;
     } else {
-        console.error("Error: hasGluten value is:", updatedBread.hasGluten);
+        updateBread.hasGluten = false;
     }
-    Bread[arrayIndex] = updatedBread;
-    res.redirect(`/breads/${arrayIndex}`);
+    Bread.findByIdAndUpdate(id, updateBread, { new: true }).then((updatedBread) => {
+        console.log(updatedBread);
+        res.redirect(`/breads/${id}`);
+    });
 });
 
 // DELETE
-breads.delete("/:arrayIndex", (req, res) => {
-    const arrayIndex = req.params.arrayIndex;
-    Bread.splice(arrayIndex, 1);
-    res.status(303).redirect("/breads");
+breads.delete("/:id", (req, res) => {
+    const id = req.params.id;
+    Bread.findByIdAndDelete(id).then((deletedBread) => {
+        res.status(303).redirect("/breads");
+    });
 });
 
 // EXPORT
