@@ -20,6 +20,7 @@ app.set("view engine", "jsx");
 app.engine("jsx", require("express-react-views").createEngine());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(methodOverride("_method"));
 
 // ROUTES
@@ -30,6 +31,10 @@ app.get("/", (req, res) => {
 // Bread ROUTES
 const breadsController = require("./controllers/breads_controller.js");
 app.use("/breads", breadsController);
+
+// Bread API ROUTES
+const breadsApiController = require("./controllers/breads_api.js");
+app.use("/api/breads", breadsApiController);
 
 // 404 Page
 app.get("*", (req, res) => {
