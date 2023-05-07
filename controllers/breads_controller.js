@@ -6,10 +6,13 @@ const Baker = require("../models/baker.js");
 
 // INDEX - READ ALL
 breads.get("/", (req, res) => {
-    Bread.find().then((foundBreads) => {
-        res.render("index", {
-            breads: foundBreads,
-            title: "Index page",
+    Baker.find().then((foundBakers) => {
+        Bread.find().then((foundBreads) => {
+            res.render("index", {
+                breads: foundBreads,
+                bakers: foundBakers,
+                title: "Index page",
+            });
         });
     });
 });

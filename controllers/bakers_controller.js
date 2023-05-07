@@ -11,4 +11,23 @@ bakers.get("/data/seed", (req, res) => {
     res.redirect("/breads");
 });
 
+// INDEX - READ ALL
+bakers.get("/", (req, res) => {
+    Baker.find()
+        .populate("breads")
+        .then((foundBakers) => {
+            res.send(foundBakers);
+        });
+});
+
+// DETAIL - SHOW PAGE
+bakers.get("/:id", (req, res) => {
+    const id = req.params.id;
+    Baker.findById(id)
+        .populate("breads")
+        .then((foundBaker) => {
+            res.render("bakerShow", { baker: foundBaker });
+        });
+});
+
 module.exports = bakers;
