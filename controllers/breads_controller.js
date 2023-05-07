@@ -24,9 +24,13 @@ breads.get("/new", (req, res) => {
 // EDIT Bread Form
 breads.get("/:id/edit", (req, res) => {
     const id = req.params.id;
-    Bread.findById(id).then((foundBread) => {
-        res.render("edit", {
-            bread: foundBread,
+
+    Baker.find().then((foundBakers) => {
+        Bread.findById(id).then((foundBread) => {
+            res.render("edit", {
+                bread: foundBread,
+                bakers: foundBakers,
+            });
         });
     });
 });
@@ -35,6 +39,7 @@ breads.get("/:id/edit", (req, res) => {
 breads.get("/:id", (req, res) => {
     const id = req.params.id;
     Bread.findById(id)
+        .populate("baker")
         .then((foundBread) => {
             if (foundBread === null) {
                 res.send("404 - Bread not found");
