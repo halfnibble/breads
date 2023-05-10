@@ -19,6 +19,10 @@ const BakerShow = ({ baker }) => {
                     return <li key={bread.id}>{bread.name}</li>;
                 })}
             </ul>
+
+            <form action={`/bakers/${baker.id}?_method=DELETE`} method="POST">
+                <input type="submit" value="DELETE" />
+            </form>
         </Default>
     );
 };
