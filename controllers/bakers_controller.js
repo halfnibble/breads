@@ -24,7 +24,10 @@ bakers.get("/", (req, res) => {
 bakers.get("/:id", (req, res) => {
     const id = req.params.id;
     Baker.findById(id)
-        .populate("breads")
+        .populate({
+            path: "breads",
+            options: { limit: 2, skip: 1 },
+        })
         .then((foundBaker) => {
             res.render("bakerShow", { baker: foundBaker });
         });
