@@ -50,3 +50,5 @@ localhost:3003/breads {/} -> breadsController ? -> "This is the index at /breads
 app.listen(PORT, () => {
     console.log("Server is listening on port", PORT);
 });
+
+module.exports = app;
